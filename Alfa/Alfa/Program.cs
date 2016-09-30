@@ -13,12 +13,25 @@ namespace Alfa
 		{
 			XLWorkbook Book = new XLWorkbook();
 			var Page = Book.Worksheets.Add("Page1");
-			Page.Cell(1, 1).Value = 1;
-			Page.Cell(2, 1).Value = 10;
-			Page.Cell(3, 1).Value = 100;
 
-			Page.Column(1).Width = 20;
-			Page.Range(1, 1, 3, 1).AddConditionalFormat().DataBar(XLColor.Gray).LowestValue().HighestValue();
+			Page.Columns(1, 3).Width = 30;
+
+			Page.Cell(1, 1).SetValue("Lowest + Highest")
+				.CellBelow().SetValue(1)
+				.CellBelow().SetValue(10)
+				.CellBelow().SetValue(100);
+			Page.RangeUsed().AddConditionalFormat().DataBar(XLColor.Gray).LowestValue().HighestValue();
+
+			Page.Cell(1, 2).SetValue("Number + Number")
+				.CellBelow().SetValue(1)
+				.CellBelow().SetValue(10)
+				.CellBelow().SetValue(100);
+			Page.RangeUsed().AddConditionalFormat().DataBar(XLColor.Gray).Minimum(XLCFContentType.Number, 0).Maximum(XLCFContentType.Number, 100);
+
+			Page.Cell(1, 3).SetValue("Manual")
+				.CellBelow().SetValue(1)
+				.CellBelow().SetValue(10)
+				.CellBelow().SetValue(100);
 
 			var FileName = "DataBar.xlsx";
             Book.SaveAs(FileName);
